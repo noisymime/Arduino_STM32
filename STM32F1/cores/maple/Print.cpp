@@ -47,12 +47,8 @@
  */
 
 size_t Print::write(const char *str) {
-	size_t n = 0;
-    while (*str) {
-        write(*str++);
-		n++;
-    }
-	return n;
+    if (str == NULL) return 0;
+	return write((const uint8_t *)str, strlen(str));
 }
 
 size_t Print::write(const void *buffer, uint32 size) {
@@ -99,10 +95,6 @@ size_t Print::print(unsigned long n, int base) {
 }
 
 size_t Print::print(long long n, int base) {
-    if (base == BYTE) 
-	{
-        return write((uint8)n);
-    }
     if (n < 0) {
         print('-');
         n = -n;
@@ -111,13 +103,7 @@ size_t Print::print(long long n, int base) {
 }
 
 size_t Print::print(unsigned long long n, int base) {
-size_t c=0;
-    if (base == BYTE) {
-        c= write((uint8)n);
-    } else {
-        c= printNumber(n, base);
-    }
-	return c;
+	return printNumber(n, base);
 }
 
 size_t Print::print(double n, int digits) {
